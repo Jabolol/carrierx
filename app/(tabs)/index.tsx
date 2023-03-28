@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 import ParcelEntry from "../../components/ParcelEntry";
 import { Text, View } from "../../components/Themed";
 import { find, isToday, Options, sortDates } from "../../utils";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function TabOneScreen() {
   const [data, setData] = useState<Options["parcels"][] | null>(null);
+  const isFocused = useIsFocused();
   useEffect(() => {
     find("parcels").then(({ documents }) =>
       setData(documents as Options["parcels"][])
     );
-  }, []);
+  }, [isFocused]);
   return (
     <ScrollView>
       <View style={styles.container}>
