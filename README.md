@@ -116,8 +116,9 @@ yarn
 >
 > ![](/assets/images/mongo.png)
 
-6. Go to `./utils.ts` and change all variables with value `CHANGE_ME` for the
-   required values. Do not remove the quotes, place the content inside.
+6. Go to `./utils.ts` and change all variables with value `CHANGE_ME` (L:34 and
+   onwards) for the required values. Do not remove the quotes, place the content
+   inside.
 7. Time to populate the database with predefined values. Run:
 
 ```sh
