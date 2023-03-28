@@ -7,14 +7,16 @@ import {
 import { Text, View } from "../../components/Themed";
 import { useEffect, useState } from "react";
 import { colors, find, Options } from "../../utils";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function TabTwoScreen() {
   const [ledger, setLedger] = useState<Options["ledger"][] | null>(null);
+  const isFocused = useIsFocused();
   useEffect(() => {
     find("ledger").then(({ documents }) =>
       setLedger((documents as Options["ledger"][]).reverse())
     );
-  }, []);
+  }, [isFocused]);
   return (
     <>
       {ledger
@@ -47,7 +49,7 @@ export default function TabTwoScreen() {
                   <Text>
                     {(() => {
                       const [s1, s2, s3] = id.split("-");
-                      return [s1, s2, s3].join("-");
+                      return "EvtID: " + [s1, s2, s3].join("-");
                     })()}
                   </Text>
                 </View>
