@@ -53,25 +53,27 @@ export default function ModalScreen() {
               setError("Invalid carrier ID");
               return;
             }
+            if (!parcel.match(/^(\w{12})$/) || !carrier.match(/^(\w{12})$/)) {
+              setError("IDs must match /^(\w{12})$/");
+              return;
+            }
             await insertMany("parcels", [{
               deliveryAdress: `St. Marina, ${
                 Math.floor(Math.random() * 50) + 2
               }, Barcelona`,
-              deliveryDate: `${Math.floor(Math.random() * 28) + 1}/${
+              deliveryDate: `${Math.floor(Math.random() * 11) + 1}/${
                 Math.floor(Math.random() * 30) + 1
               }/202${Math.floor(Math.random() * 3)}`,
               pickupAdress: `St. Solsones, ${
                 Math.floor(Math.random() * 50) + 2
               }, Barcelona`,
-              pickupDate: `${Math.floor(Math.random() * 28) + 1}/${
-                Math.floor(Math.random() * 30) + 1
-              }/202${Math.floor(Math.random() * 3)}`,
-              itemsCount: 1,
+              pickupDate: `${new Date().toLocaleDateString()}`,
+              itemsCount: 2,
               items: [
                 "fc13ae2238000168",
                 "fc13ae2238000168",
               ],
-              id: parcel,
+              id: parcel.toUpperCase(),
             }]);
             await insertMany("ledger", [
               {
