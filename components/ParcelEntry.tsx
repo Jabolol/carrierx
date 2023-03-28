@@ -2,6 +2,8 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { Text, View } from "./Themed";
 import Separator from "./Separator";
+import { insertMany } from "../utils";
+import uuid from "react-native-uuid";
 
 type ParcelType = {
   title: string;
@@ -18,7 +20,16 @@ export default function ParcelEntry(
   return (
     <>
       <Separator />
-      <TouchableOpacity onPress={() => router.push(`/(info)/parcel?id=${_id}`)}>
+      <TouchableOpacity
+        onPress={async () => {
+          await insertMany("ledger", [{
+            action: "PARCEL_VIEW",
+            date: new Date().getTime(),
+            id: uuid.v4() as string,
+          }]);
+          router.push(`/(info)/parcel?id=${_id}`);
+        }}
+      >
         <View style={styles.container}>
           <View style={styles.info}>
             <Text style={styles.title}>{title}</Text>
