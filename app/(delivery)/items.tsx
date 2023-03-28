@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import { useRouter, useSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { find, findOne, Options } from "../../utils";
+import { find, findOne, insertMany, Options } from "../../utils";
 import ItemEntry from "../../components/ItemEntry";
+import uuid from "react-native-uuid";
 
 export default function Parcel() {
-  const { id } = useSearchParams();
+  const { id, c_id } = useSearchParams();
   const router = useRouter();
   const [data, setData] = useState<Options["parcels"] | null>(null);
   const [items, setItems] = useState<Options["items"][] | null>(null);
@@ -26,6 +27,11 @@ export default function Parcel() {
           // @ts-ignore: Special mongodb queries are not supported yet
           (await find("items", { "id": { $in: parcels.items } })).documents,
         );
+        await insertMany("ledger", [{
+          action: "ITEM_VIEW",
+          id: uuid.v4() as string,
+          date: new Date().getTime(),
+        }]);
       },
     );
   }, []);
@@ -48,7 +54,7 @@ export default function Parcel() {
           <View style={styles.bottomView}>
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={() => router.push("/(delivery)/carrier")}
+              onPress={() => router.push(`/(delivery)/carrier?c_id=${c_id}`)}
             >
               <DefaultText style={styles.buttonText}>Delivery</DefaultText>
             </TouchableOpacity>
