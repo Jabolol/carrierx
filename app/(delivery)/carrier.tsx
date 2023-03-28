@@ -11,6 +11,7 @@ import React, { useRef, useState } from "react";
 import SignatureScreen, {
   SignatureViewRef,
 } from "react-native-signature-canvas";
+import { useSearchParams } from "expo-router";
 import { findOne, insertMany } from "../../utils";
 import uuid from "react-native-uuid";
 import md5 from "react-native-md5";
@@ -21,8 +22,10 @@ export default function ModalScreen() {
   const [plate, setPlate] = useState<string>("");
   const [signature, setSignature] = useState<string | null>(null);
   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
   const ref = useRef<SignatureViewRef>(null);
   const router = useRouter();
+  const { c_id } = useSearchParams();
 
   return (
     <View style={styles.container}>
@@ -56,7 +59,10 @@ export default function ModalScreen() {
           autoClear={false}
         />
       </View>
-      {error && <Text style={{ color: "#ff0000" }}>{error}</Text>}
+      {error && <Text style={{ color: "#ff0000", padding: 10 }}>{error}</Text>}
+      {success && (
+        <Text style={{ color: "#00ff00", padding: 10 }}>{success}</Text>
+      )}
       <View style={styles.bottomView}>
         <TouchableOpacity
           style={styles.buttonContainer}
@@ -66,11 +72,15 @@ export default function ModalScreen() {
               date: new Date().getTime(),
               id: uuid.v4() as string,
             }]);
+            if (!name || !plate) {
+              setError("Fields must not be empty");
+              return;
+            }
             const { document } = await findOne("carriers", {
               licensePlate: plate.toLowerCase(),
               driver: name,
             });
-            if (!document) {
+            if (!document || document.id !== c_id) {
               await insertMany("ledger", [{
                 action: "DELIVERY_ERROR",
                 date: new Date().getTime(),
@@ -93,6 +103,9 @@ export default function ModalScreen() {
               date: new Date().getTime(),
               id: uuid.v4() as string,
             }]);
+            setError("");
+            setSuccess(`Successfully saved pick up by ${name} (${plate})`);
+            await new Promise((r) => setTimeout(r, 3e3));
             router.push("/");
           }}
         >
