@@ -4,11 +4,13 @@ import { useSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { find, findOne, Options } from "../../utils";
 import CarrierEntry from "../../components/CarrierEntry";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Parcel() {
   const { id } = useSearchParams();
   const [data, setData] = useState<Options["parcels"] | null>(null);
   const [carriers, setCarriers] = useState<Options["carriers"][] | null>(null);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     findOne("parcels", { _id: { $oid: id as string } }).then(({ document }) =>
@@ -17,7 +19,7 @@ export default function Parcel() {
     find("carriers").then(({ documents }) =>
       setCarriers(documents as Options["carriers"][])
     );
-  }, []);
+  }, [isFocused]);
 
   return (
     data && carriers
@@ -32,7 +34,7 @@ export default function Parcel() {
                 description={carrier.companyName}
                 delivered={index % 2 === 1}
                 items={data.itemsCount}
-                path={`/(delivery)/items?id=${id}`}
+                path={`/(delivery)/items?id=${id}&c_id=${carrier.id}`}
               />
             ))}
           </View>
