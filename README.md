@@ -63,13 +63,13 @@ _secure_, _efficient_ and _beautiful_.
 - [x] Immutable ledger for main actions
   - [x] Improve transparency
   - [x] Main actions
-    - PARCEL_ADD: Scan QR and add parcel
-    - PARCEL_VIEW: View contents of parcel
-    - ITEM_VIEW: View single item
-    - DELIVERY_EXECUTE: Deliver (add carrier info)
-    - DELIVERY_SUCCESS: Delivery given to carrier
-    - DELIVERY_ERROR: Info is wrong
-    - DELIVERY_CONFIRMED: Delivery confirmed by carrier
+    - [x] PARCEL_ADD: Scan QR and add parcel
+    - [x] PARCEL_VIEW: View contents of parcel
+    - [x] ITEM_VIEW: View single item
+    - [x] DELIVERY_EXECUTE: Deliver (add carrier info)
+    - [x] DELIVERY_SUCCESS: Delivery given to carrier
+    - [x] DELIVERY_ERROR: Info is wrong
+    - [x] DELIVERY_CONFIRMED: Delivery confirmed by carrier
 - [x] Dark Mode
 - [x] Fully responsive
   - [x] Supports multiple screen resolutions
@@ -108,6 +108,13 @@ yarn
    - signatures
 
 > Note: The names are case sensitive
+
+> Note: The required structure is a database with 5 collections inside:
+> **items**, **parcels**, **ledger**, **carriers** and **signatures**
+
+> Note: Here's how the entries should look like under a database named **data**:
+>
+> ![](/assets/images/mongo.png)
 
 6. Go to `./utils.ts` and change all variables with value `CHANGE_ME` for the
    required values. Do not remove the quotes, place the content inside.
