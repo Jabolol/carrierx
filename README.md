@@ -1,5 +1,10 @@
 # The ultimate App
 
+> **Note**
+> 
+> **1st place** for the
+> [`React Native`](https://nuwe.io/dev/competitions/mediamarkt-letsgo-hackathon) category at **Let's Go** Hackathon, organized by **Mediamarkt**
+
 CarrierX is a `React Native` mobile application coded using `TypeScript` and
 `Solidity`. Its aim is to help Mediamarkt's employees have an easier time
 managing all the paraphernalia related to carriers and deliveries, while being
